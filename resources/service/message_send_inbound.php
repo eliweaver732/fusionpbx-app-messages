@@ -132,7 +132,11 @@
 //send the sip message
 	if (is_array($extensions) && @sizeof($extensions) != 0) {
 		foreach ($extensions as $row) {
-			$contacts = trim(event_socket_request(null, "api sofia_contact ".$row['extension']."@".$row['domain_name']));
+			$contacts = event_socket_request(null, "api sofia_contact ".$row['extension']."@".$row['domain_name']);
+			if (!is_string($contacts)) {
+				continue;
+			}
+			$contacts = trim($contacts);
 			if (isset($debug)) {
 				echo $row['extension']."@".$row['domain_name']." contacts: ".$contacts."\n";
 			}
